@@ -91,25 +91,31 @@ const Navbar = ({ toggle }) => {
             <FaBars />
           </MobileIcon>
           <NavMenu>
-            {
+            {/* {
               type === 'store_owner' && (
                 <NavItem>
                   <NavLinks onClick={event => handleProducts(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Manage Products</NavLinks>
                 </NavItem>
               )
-            }
+            } */}
+            <NavItem>
+                  <NavLinks onClick={event => handleProducts(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Manage Products</NavLinks>
+                </NavItem>
             <NavItem>
               <NavLinks onClick={event => handleInventory(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Manage Inventory</NavLinks>
             </NavItem>
             <NavItem>
               <NavLinks onClick={event => handleStockStatus(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Update Inventory By Stock Status</NavLinks>
             </NavItem>
-            {
+            <NavItem>
+                  <NavLinks onClick={event => handleSales(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Manage Online Sales</NavLinks>
+                </NavItem>
+            {/* {
               type === 'store_owner' && (
                 <NavItem>
                   <NavLinks onClick={event => handleSales(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Manage Online Sales</NavLinks>
                 </NavItem>)
-            }
+            } */}
 
           </NavMenu>
 

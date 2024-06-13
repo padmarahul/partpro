@@ -116,7 +116,7 @@ navigate(`/add-product/${id}`);
                                         Update Product{hover ? <ArrowForward /> : <ArrowRight />}
                                     </Button>
                                 </HeroBtnWrapper>
-                                <HeroBtnWrapper style={{ display: "inline-block" }}>
+                                {/* <HeroBtnWrapper style={{ display: "inline-block" }}>
                                     <Button
                                         onClick={(event) => handleDeleteProduct(event,item)}
                                         onMouseEnter={onHover}
@@ -126,7 +126,7 @@ navigate(`/add-product/${id}`);
                                     >
                                        Delete Product{hover ? <ArrowForward /> : <ArrowRight />}
                                     </Button>
-                                </HeroBtnWrapper>
+                                </HeroBtnWrapper> */}
                             </div>
                         </>
                     ))}

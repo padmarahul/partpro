@@ -10,7 +10,7 @@ const Footer = () => {
                     <SocialMediaWrap>
                     Part Pro Management System
                         <WebsiteRights>
-                            SE Project © {new Date().getFullYear()}
+                            Usability Project © {new Date().getFullYear()}
                             &nbsp;All Rights Reserved
                         </WebsiteRights>
                     </SocialMediaWrap>

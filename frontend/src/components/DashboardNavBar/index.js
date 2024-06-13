@@ -107,9 +107,9 @@ const Navbar = ({ toggle }) => {
             <NavItem>
               <NavLinks onClick={event => handleTrackingDetails(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Track Order Details</NavLinks>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <NavLinks onClick={event => handleFeedback(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Add Feedback</NavLinks>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
               <FaMapMarkerAlt />
               <NavLinks to="/location-details">{location}</NavLinks>
