@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "com.unt.se.ppms.repository")
 public class PartpromanagementsystemApplication {
 
+	
 	public static void main(String[] args) {
 		SpringApplication.run(PartpromanagementsystemApplication.class, args);
 	}

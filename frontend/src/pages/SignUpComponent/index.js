@@ -19,10 +19,13 @@ import {
   FeaturesContainer,
   Table
 } from "../../components/DetaisSection/Features.elements";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 const SignUpComponent = ({ lightTopLine }) => {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
   const [loading, setLoading] = useState(false)
+  const [errorMessages, setErrorMessages] = useState({});
   const [user, setUser] = useState({
     userName: '',
     password: '',
@@ -44,6 +47,33 @@ const SignUpComponent = ({ lightTopLine }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Initialize an object to hold error messages
+    const errors = {};
+
+    // Basic validation
+    if (!user.userName) errors.userName = 'Username is required.';
+    if (!user.password) errors.password = 'Password is required.';
+    if (user.password && user.password.length < 6) errors.password = 'Password must be at least 6 characters long.';
+    if (!user.firstName) errors.firstName = 'First name is required.';
+    if (!user.lastName) errors.lastName = 'Last name is required.';
+    if (!user.emailId) errors.emailId = 'Email address is required.';
+    if (user.emailId && !/\S+@\S+\.\S+/.test(user.emailId)) errors.emailId = 'Email address is invalid.';
+    if (!user.gender) errors.gender = 'Gender is required.';
+    if (!user.mobileNumber) errors.mobileNumber = 'Mobile number is required.';
+    if (user.mobileNumber && !/^\d{10}$/.test(user.mobileNumber)) errors.mobileNumber = 'Mobile number must be 10 digits.';
+    if (!user.zipcode) errors.zipcode = 'Zipcode is required.';
+    if (user.zipcode && !/^\d{5}$/.test(user.zipcode)) errors.zipcode = 'Zipcode must be 5 digits.';
+    if (!user.typeOfUser) errors.typeOfUser = 'User type is required.';
+
+    // If there are errors, update the state and return
+    if (Object.keys(errors).length > 0) {
+      setErrorMessages(errors);
+      return;
+    }
+
+    // Clear error messages if all validations pass
+    setErrorMessages({});
+
     LoginServices.signUp(user).then(response => {
       console.log(response.data)
       setLoading(e => !e)
@@ -52,101 +82,99 @@ const SignUpComponent = ({ lightTopLine }) => {
       console.log(error)
     })
   };
-
   const renderInputField = (key, value) => {
-    switch (key) {
-      case 'typeOfUser':
-        return (
-          <select name={key} value={value} onChange={handleChange}
-            style={{
-              borderRadius: "6px",
-              textAlign: "center",
-              padding: "0.7vh",
-              marginLeft: "1vh",
-            }}>
-            <option value="">Select User Type</option>
-            <option value="CUSTOMER">Customer</option>
-            <option value="EMPLOYEE">Employee</option>
-          </select>
-        );
-      case 'gender':
-        return (
-          <select name={key} value={value} onChange={handleChange}
-            style={{
-              borderRadius: "6px",
-              textAlign: "center",
-              padding: "0.7vh",
-              marginLeft: "1vh",
-            }}>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        );
-      case 'password':
-        return (
-          <input
-            style={{
-              borderRadius: "6px",
-              textAlign: "center",
-              padding: "0.7vh",
-              marginLeft: "1vh",
-            }}
-            type="password"
-            name={key}
-            value={value}
-            onChange={handleChange}
-          />
-        );
-      case 'mobileNumber':
-        return (
-          <input
-            style={{
-              borderRadius: "6px",
-              textAlign: "center",
-              padding: "0.7vh",
-              marginLeft: "1vh",
-            }}
-            type="number"
-            name={key}
-            value={value}
-            onChange={handleChange}
-          />
-        );
-      case 'zipcode':
-        return (
-          <input
-            style={{
-              borderRadius: "6px",
-              textAlign: "center",
-              padding: "0.7vh",
-              marginLeft: "1vh",
-            }}
-            type="number"
-            name={key}
-            value={value}
-            onChange={handleChange}
-          />
-        );
-      default:
-        return (
-          <input
-            style={{
-              borderRadius: "6px",
-              textAlign: "center",
-              padding: "0.7vh",
-              marginLeft: "1vh",
-            }}
-            type="text"
-            name={key}
-            value={value}
-            onChange={handleChange}
-          />
-        );
-    }
+    return (
+      <div>
+        {key === 'password' ? (
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip id={`tooltip-${key}`}>Choose a strong password</Tooltip>}
+          >
+            <input
+              style={{
+                borderRadius: "6px",
+                textAlign: "center",
+                padding: "0.7vh",
+                marginLeft: "1vh",
+              }}
+              type="password"
+              name={key}
+              value={value}
+              onChange={handleChange}
+            />
+          </OverlayTrigger>
+        ) : key === 'mobileNumber' || key === 'zipcode' ? (
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip id={`tooltip-${key}`}>Enter a valid {key === 'mobileNumber' ? 'mobile number' : 'zipcode'}</Tooltip>}
+          >
+            <input
+              style={{
+                borderRadius: "6px",
+                textAlign: "center",
+                padding: "0.7vh",
+                marginLeft: "1vh",
+              }}
+              type="number"
+              name={key}
+              value={value}
+              onChange={handleChange}
+            />
+          </OverlayTrigger>
+        ) : key === 'gender' || key === 'typeOfUser' ? (
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip id={`tooltip-${key}`}>Select your {key === 'gender' ? 'gender' : 'user type'}</Tooltip>}
+          >
+            <select
+              name={key}
+              value={value}
+              onChange={handleChange}
+              style={{
+                borderRadius: "6px",
+                textAlign: "center",
+                padding: "0.7vh",
+                marginLeft: "1vh",
+              }}
+            >
+              <option value="">{`Select ${key.charAt(0).toUpperCase() + key.slice(1)}`}</option>
+              {key === 'gender' ? (
+                <>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </>
+              ) : (
+                <>
+                  <option value="CUSTOMER">Customer</option>
+                  <option value="EMPLOYEE">Employee</option>
+                </>
+              )}
+            </select>
+          </OverlayTrigger>
+        ) : (
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip id={`tooltip-${key}`}>Enter your {key}</Tooltip>}
+          >
+            <input
+              style={{
+                borderRadius: "6px",
+                textAlign: "center",
+                padding: "0.7vh",
+                marginLeft: "1vh",
+              }}
+              type="text"
+              name={key}
+              value={value}
+              onChange={handleChange}
+            />
+          </OverlayTrigger>
+        )}
+        {errorMessages[key] && <p className="text-danger">{errorMessages[key]}</p>}
+      </div>
+    );
   };
-
   return (
     <>
       <FeaturesSec>
@@ -193,15 +221,20 @@ const SignUpComponent = ({ lightTopLine }) => {
                   </Table>
                 </TextWrapper>
                 <HeroBtnWrapper style={{ display: "inline-block" }}>
-                  <Button
-                    onClick={(event) => handleSubmit(event)}
-                    onMouseEnter={onHover}
-                    onMouseLeave={onHover}
-                    primary="true"
-                    dark="true"
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip id="tooltip-create-user">Click to create user</Tooltip>}
                   >
-                    Create User {hover ? <ArrowForward /> : <ArrowRight />}
-                  </Button>
+                    <Button
+                      onClick={(event) => handleSubmit(event)}
+                      onMouseEnter={onHover}
+                      onMouseLeave={onHover}
+                      primary="true"
+                      dark="true"
+                    >
+                      Create User {hover ? <ArrowForward /> : <ArrowRight />}
+                    </Button>
+                  </OverlayTrigger>
                 </HeroBtnWrapper>
               </FeaturesColumn>
             </FeaturesRow>

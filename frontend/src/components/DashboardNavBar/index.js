@@ -79,26 +79,24 @@ const Navbar = ({ toggle }) => {
     const id =state.userData.userId;
     navigate(`/manage-feedback/${id}`)
   }
+
+  const handleLoyaltyPoints =(e)=>{
+    e.preventDefault()
+    const id =state.userData.userId;
+    navigate(`/view-loyaltypoints/${id}`)
+  }
   return (
     <>
       <Nav scrollNav={scrollNav}>
         <NavbarContainer>
           <NavLogo onClick={toggleHome} to="/">
-            <h1>
-              Part Pro
-            </h1>
+              PartPro
           </NavLogo>
           <MobileIcon onClick={toggle}>
             <FaBars />
           </MobileIcon>
           <NavMenu>
-            <NavItem>
-              <NavSearch>
-                <input type="text" placeholder="Search..." />
-                <FaSearch />
-              </NavSearch>
-            </NavItem>
-            <NavItem>
+            <NavItem style={{ marginLeft:"25px"}}>
               <NavLinks onClick={event => handleAddVehicleDetails(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Add Vehicle Details</NavLinks>
             </NavItem>
             <NavItem>
@@ -107,9 +105,12 @@ const Navbar = ({ toggle }) => {
             <NavItem>
               <NavLinks onClick={event => handleTrackingDetails(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Track Order Details</NavLinks>
             </NavItem>
-            {/* <NavItem>
+            <NavItem>
               <NavLinks onClick={event => handleFeedback(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >Add Feedback</NavLinks>
-            </NavItem> */}
+            </NavItem>
+            <NavItem>
+              <NavLinks onClick={event => handleLoyaltyPoints(event)} smooth={true} duration={500} spy={true} exact='true' offset={-80} >View Loyalty Points</NavLinks>
+            </NavItem>
             <NavItem>
               <FaMapMarkerAlt />
               <NavLinks to="/location-details">{location}</NavLinks>

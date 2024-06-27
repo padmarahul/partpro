@@ -21,9 +21,12 @@ import {
     FeaturesContainer,
     Table
 } from "../../components/DetaisSection/Features.elements";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 const OrderTrackingComponent = ({ lightTopLine }) => {
     const [hover, setHover] = useState(false);
     const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false)
     const [state] = useContext(GlobalStateContext);
     const [tracking, setTracking] = useState({
@@ -39,36 +42,31 @@ const OrderTrackingComponent = ({ lightTopLine }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(tracking);
-        PaymentServices.trackOrder(tracking.trackingId).then(response => {
-            console.log(response.data)
-            setDetails(response.data)
-            // setLoading(e => !e)
-            console.log(details)
-        }).catch(error => {
-            console.log(error)
-        })
-    };
-    const renderInputField = (key, value) => {
-        switch (key) {
-            case 'productPrice':
-                return (
-                    <input
-                        style={{
-                            borderRadius: "6px",
-                            textAlign: "center",
-                            padding: "0.7vh",
-                            marginLeft: "1vh",
-                        }}
-                        type="number"
-                        name={key}
-                        value={value}
-                        onChange={handleChange}
-                    />
-                );
+        setErrorMessage(''); // Clear any previous error messages
+        setLoading(true); // Show loading spinner
 
-            default:
-                return (
+        PaymentServices.trackOrder(tracking.trackingId).then(response => {
+            if (!response.data) {
+                setErrorMessage('Order Tracking ID is invalid. Please try with a valid order tracking ID.');
+                setDetails(''); // Clear previous details
+            } else {
+                setDetails(response.data);
+            }
+            setLoading(false); // Hide loading spinner
+        }).catch(error => {
+            console.log(error);
+            setErrorMessage('Order Tracking ID is invalid. Please try with a valid order tracking ID.');
+            setLoading(false); // Hide loading spinner
+        });
+    };
+
+    const renderInputField = (key, value) => {
+        return (
+            <OverlayTrigger
+                placement="right"
+                overlay={<Tooltip id={`tooltip-${key}`}>Enter your {key.replace(/([A-Z])/g, ' $1').toLowerCase()}</Tooltip>}
+            >
+                <div>
                     <input
                         style={{
                             borderRadius: "6px",
@@ -81,10 +79,10 @@ const OrderTrackingComponent = ({ lightTopLine }) => {
                         value={value}
                         onChange={handleChange}
                     />
-                );
-        }
+                </div>
+            </OverlayTrigger>
+        );
     };
-
 
     return (
         <>
@@ -142,9 +140,10 @@ const OrderTrackingComponent = ({ lightTopLine }) => {
                                         Track Order {hover ? <ArrowForward /> : <ArrowRight />}
                                     </Button>
                                 </HeroBtnWrapper>
+                                {errorMessage && <p className="text-danger">{errorMessage}</p>}
                                 {details && (
                                     <>
-                                        <div style={{ marginTop:"5%"}}>
+                                        <div style={{ marginTop: "5%" }}>
                                             <h3><b>
                                                 Order Details:
                                             </b></h3>

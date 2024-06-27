@@ -24,6 +24,10 @@ class LoginServices  {
    return axiosInstance.put(`${PARTPRO_BASE_URL}/user/changepassword/${userName}/${password}`)
     }
 
+    retryOtp(userId){
+        return axiosInstance.post(`${PARTPRO_BASE_URL}/user/resendotp/${userId}`)
+    }
+
 
 
 }

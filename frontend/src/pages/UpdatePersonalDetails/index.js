@@ -20,12 +20,14 @@ import {
     FeaturesContainer,
     Table
 } from "../../components/DetaisSection/Features.elements";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const UpdatePersonalDetails = ({ lightTopLine }) => {
     const [hover, setHover] = useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
     const [state] = useContext(GlobalStateContext);
+    const [errorMessages, setErrorMessages] = useState({});
     const [customer, setCustomer] = useState({
         fullName: '',
         emailId: '',
@@ -35,70 +37,89 @@ const UpdatePersonalDetails = ({ lightTopLine }) => {
     const onHover = () => {
         setHover(!hover);
     };
+
     const renderInputField = (key, value) => {
-        switch (key) {
-            case 'mobileNumber':
-                return (
-                    <input
-                        style={{
-                            borderRadius: "6px",
-                            textAlign: "center",
-                            padding: "0.7vh",
-                            marginLeft: "1vh",
-                        }}
-                        type="number"
-                        name={key}
-                        value={value}
-                        onChange={handleChange}
-                    />
-                );
-            case 'zipcode':
-                return (
-                    <input
-                        style={{
-                            borderRadius: "6px",
-                            textAlign: "center",
-                            padding: "0.7vh",
-                            marginLeft: "1vh",
-                        }}
-                        type="number"
-                        name={key}
-                        value={value}
-                        onChange={handleChange}
-                    />
-                );
-            default:
-                return (
-                    <input
-                        style={{
-                            borderRadius: "6px",
-                            textAlign: "center",
-                            padding: "0.7vh",
-                            marginLeft: "1vh",
-                        }}
-                        type="text"
-                        name={key}
-                        value={value}
-                        onChange={handleChange}
-                    />
-                );
-        }
+        return (
+            <OverlayTrigger
+                placement="right"
+                overlay={<Tooltip id={`tooltip-${key}`}>Enter your {key.replace(/([A-Z])/g, ' $1').toLowerCase()}</Tooltip>}
+            >
+                <div>
+                    {key === 'mobileNumber' || key === 'zipcode' ? (
+                        <input
+                            style={{
+                                borderRadius: "6px",
+                                textAlign: "center",
+                                padding: "0.7vh",
+                                marginLeft: "1vh",
+                            }}
+                            type="number"
+                            name={key}
+                            value={value}
+                            onChange={handleChange}
+                        />
+                    ) : (
+                        <input
+                            style={{
+                                borderRadius: "6px",
+                                textAlign: "center",
+                                padding: "0.7vh",
+                                marginLeft: "1vh",
+                            }}
+                            type="text"
+                            name={key}
+                            value={value}
+                            onChange={handleChange}
+                        />
+                    )}
+                    {errorMessages[key] && <p className="text-danger">{errorMessages[key]}</p>}
+                </div>
+            </OverlayTrigger>
+        );
     };
+
     const handleChange = (e) => {
         setCustomer({ ...customer, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(customer);
+
+        // Initialize an object to hold error messages
+        const errors = {};
+
+        // Basic validation
+        if (!customer.fullName) errors.fullName = 'Full name is required.';
+        if (!customer.emailId) errors.emailId = 'Email address is required.';
+        if (customer.emailId && !/\S+@\S+\.\S+/.test(customer.emailId)) errors.emailId = 'Email address is invalid.';
+        if (!customer.mobileNumber) errors.mobileNumber = 'Mobile number is required.';
+        if (customer.mobileNumber && !/^\d{10}$/.test(customer.mobileNumber)) errors.mobileNumber = 'Mobile number must be 10 digits.';
+        if (!customer.zipcode) errors.zipcode = 'Zipcode is required.';
+        if (customer.zipcode && !/^\d{5}$/.test(customer.zipcode)) errors.zipcode = 'Zipcode must be 5 digits.';
+
+        // If there are errors, update the state and return
+        if (Object.keys(errors).length > 0) {
+            setErrorMessages(errors);
+            return;
+        }
+
+        // Clear error messages if all validations pass
+        setErrorMessages({});
+
+        // Show loading spinner
+        setLoading(true);
+
+        // Service call to update personal details
         CustomerServices.updatePersonalDetails(state.userData.userId, customer).then(response => {
-            console.log(response.data)
-            setLoading(e => !e)
-            navigate('/dashboard')
+            console.log(response.data);
+            setLoading(false);
+            navigate('/dashboard');
         }).catch(error => {
-            console.log(error)
-        })
+            console.log(error);
+            setLoading(false);
+        });
     };
+
 
     return (
         <>
@@ -146,15 +167,20 @@ const UpdatePersonalDetails = ({ lightTopLine }) => {
                                     </Table>
                                 </TextWrapper>
                                 <HeroBtnWrapper style={{ display: "inline-block" }}>
-                                    <Button
-                                        onClick={(event) => handleSubmit(event)}
-                                        onMouseEnter={onHover}
-                                        onMouseLeave={onHover}
-                                        primary="true"
-                                        dark="true"
+                                    <OverlayTrigger
+                                        placement="right"
+                                        overlay={<Tooltip id="tooltip-update-personal">Click to update personal details</Tooltip>}
                                     >
-                                        Update Personal Details {hover ? <ArrowForward /> : <ArrowRight />}
-                                    </Button>
+                                        <Button
+                                            onClick={(event) => handleSubmit(event)}
+                                            onMouseEnter={onHover}
+                                            onMouseLeave={onHover}
+                                            primary="true"
+                                            dark="true"
+                                        >
+                                            Update Personal Details {hover ? <ArrowForward /> : <ArrowRight />}
+                                        </Button>
+                                    </OverlayTrigger>
                                 </HeroBtnWrapper>
                             </FeaturesColumn>
                         </FeaturesRow>

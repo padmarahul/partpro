@@ -2,6 +2,7 @@ package com.unt.se.ppms.service;
 
 import java.util.List;
 
+import com.unt.se.ppms.dto.CustomerDataDTO;
 import com.unt.se.ppms.entities.Cart;
 import com.unt.se.ppms.entities.Customer;
 import com.unt.se.ppms.entities.Feedback;
@@ -24,4 +25,6 @@ public interface CustomerService {
 	public String addOrUpdateFeedback(long productID, float rating);
 	
 	public Feedback viewFeedback(long productID);
+	
+	public CustomerDataDTO getCustomerDetails( int userId);
 }

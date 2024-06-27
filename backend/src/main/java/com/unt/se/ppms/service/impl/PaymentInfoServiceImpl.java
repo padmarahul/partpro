@@ -23,6 +23,7 @@ import com.unt.se.ppms.entities.Cart;
 import com.unt.se.ppms.entities.Employee;
 import com.unt.se.ppms.entities.OnlineSales;
 import com.unt.se.ppms.entities.Cart.OrderStatus;
+import com.unt.se.ppms.entities.Customer;
 import com.unt.se.ppms.entities.PaymentInfo;
 import com.unt.se.ppms.repository.CartRepository;
 import com.unt.se.ppms.repository.CustomerRepository;
@@ -176,6 +177,19 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 			li.add(dto);
 		}
 		return li;
+	}
+
+	@Override
+	public void addLoyaltyPoints(int customerId, int points) {
+		   Customer customerOpt = customerRepository.getById(customerId);
+	        if (customerOpt.getCustomerId() == customerId) {
+	        	customerOpt.setLoyaltyPoints(customerOpt.getLoyaltyPoints() + points);
+	            customerRepository.save(customerOpt);
+	        } else {
+	            // Handle the case where the customer is not found
+	            throw new RuntimeException("Customer not found with ID: " + customerId);
+	        }
+		
 	}
 
 }

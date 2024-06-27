@@ -23,6 +23,10 @@ class CustomerServices {
         return axiosInstance.get(`${PARTPRO_BASE_URL}/customer/${userId}/viewFeedback/${productId}`)
     }
 
+    viewCustomerDetails(userId){
+        return axiosInstance.get(`${PARTPRO_BASE_URL}/customer/${userId}/getCustomerDetails`)
+    }
+
 
 }
 

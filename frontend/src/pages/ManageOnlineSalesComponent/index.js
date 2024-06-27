@@ -49,7 +49,7 @@ const ManageOnlineSalesComponent = ({ lightTopLine }) => {
         return salesData.map(sale => (
             <tr key={sale.saleID}>
                 <td>{sale.saleID}</td>
-                <td>{sale.totalPrice}</td>
+                <td>{sale.totalPrice + " $"}</td>
                 <td>{sale.employeeName}</td>
                 <td>{sale.customerName}</td>
                 <td>{sale.productName}</td>
@@ -85,19 +85,19 @@ const ManageOnlineSalesComponent = ({ lightTopLine }) => {
                             <FeaturesColumn>
                                 <TextWrapper>
                                     <Table >
-                                    <StyledTable>
-                                        <thead>
-                                            <tr>
-                                                <th>Sale ID</th>
-                                                <th>Total Price</th>
-                                                <th>Employee Name</th>
-                                                <th>Customer Name</th>
-                                                <th>Product Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {renderSalesDataRows()}
-                                        </tbody>
+                                        <StyledTable>
+                                            <thead>
+                                                <tr>
+                                                    <th>Sale ID</th>
+                                                    <th>Total Price (in $)</th>
+                                                    <th>Employee Name</th>
+                                                    <th>Customer Name</th>
+                                                    <th>Product Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {renderSalesDataRows()}
+                                            </tbody>
                                         </StyledTable>
                                     </Table>
                                 </TextWrapper>

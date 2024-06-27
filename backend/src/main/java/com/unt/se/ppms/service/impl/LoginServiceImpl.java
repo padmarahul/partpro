@@ -104,7 +104,7 @@ public class LoginServiceImpl implements LoginService {
 					throw new InvalidLoginCredentialsException("Wrong password");
 				}
 			}else {
-				throw new UserNotFoundException("User doesn't exist");
+				throw new UserNotFoundException("User does not exist");
 			}
 		}catch(InvalidLoginCredentialsException e) {
 			throw new InvalidLoginCredentialsException(e.getMessage());

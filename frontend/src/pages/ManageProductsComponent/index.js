@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect} from 'react';
-import { useLocation, useNavigate} from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import DashboardServices from '../../services/DashboardServices';
 import {
     FeaturesSec
 } from "../../components/DetaisSection/Features.elements";
-import {GlobalStateContext} from  '../../GlobalStateContext'
+import { GlobalStateContext } from '../../GlobalStateContext'
 import { Button } from "../../components/ButtonElement";
 import '../ProductDetailsComponent/ProductDetails.css';
 import EmployeeNavbar from "../../components/EmployeeNabBar/index"
@@ -12,7 +12,7 @@ import {
     HeroBtnWrapper,
     ArrowForward,
     ArrowRight,
-  } from "../../components/HeroSection/HeroElements"
+} from "../../components/HeroSection/HeroElements"
 import EmployeeServices from '../../services/EmployeeServices';
 const ManageProductsComponents = () => {
     const [state, dispatch] = useContext(GlobalStateContext);
@@ -24,28 +24,28 @@ const ManageProductsComponents = () => {
 
     const onHover = () => {
         setHover(!hover);
-      };
+    };
 
-      const handleNewProduct =(event,param)=>{
-event.preventDefault()
-const id = state.userData.userId;
-navigate(`/add-product/${id}`);
-      }
-      const handleUpdateProduct =(event,param)=>{
+    const handleNewProduct = (event, param) => {
         event.preventDefault()
         const id = state.userData.userId;
-        navigate(`/update-product/${id}`,{ state: { param } });
-              }
+        navigate(`/add-product/${id}`);
+    }
+    const handleUpdateProduct = (event, param) => {
+        event.preventDefault()
+        const id = state.userData.userId;
+        navigate(`/update-product/${id}`, { state: { param } });
+    }
 
-      const handleDeleteProduct=(event,param)=>{
+    const handleDeleteProduct = (event, param) => {
         event.preventDefault()
         EmployeeServices.deleteProduct(param.productId).then(response => {
-    console.log(response.data)
-    navigate("/employee-dashboard")
-}).catch(error => {
-    console.log(error)
-})
-      }
+            console.log(response.data)
+            navigate("/employee-dashboard")
+        }).catch(error => {
+            console.log(error)
+        })
+    }
     const getData = () => {
         DashboardServices.getAllProducts().then(response => {
             console.log(response.data)
@@ -62,7 +62,7 @@ navigate(`/add-product/${id}`);
             console.log(error)
         })
     }
-   
+
 
     const generateImage = (base64Image) => {
         const imageData = base64Image.split(",")[1];
@@ -96,7 +96,7 @@ navigate(`/add-product/${id}`);
                                 <p className="product-price">${item.productPrice.toFixed(2)}</p>
                                 <HeroBtnWrapper style={{ display: "inline-block" }}>
                                     <Button
-                                        onClick={(event) => handleNewProduct(event,item)}
+                                        onClick={(event) => handleNewProduct(event, item)}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                         primary="true"
@@ -107,7 +107,7 @@ navigate(`/add-product/${id}`);
                                 </HeroBtnWrapper>
                                 <HeroBtnWrapper style={{ display: "inline-block" }}>
                                     <Button
-                                        onClick={(event) => handleUpdateProduct(event,item)}
+                                        onClick={(event) => handleUpdateProduct(event, item)}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                         primary="true"
@@ -116,17 +116,17 @@ navigate(`/add-product/${id}`);
                                         Update Product{hover ? <ArrowForward /> : <ArrowRight />}
                                     </Button>
                                 </HeroBtnWrapper>
-                                {/* <HeroBtnWrapper style={{ display: "inline-block" }}>
+                                <HeroBtnWrapper style={{ display: "inline-block" }}>
                                     <Button
-                                        onClick={(event) => handleDeleteProduct(event,item)}
+                                        onClick={(event) => handleDeleteProduct(event, item)}
                                         onMouseEnter={onHover}
                                         onMouseLeave={onHover}
                                         primary="true"
                                         dark="true"
                                     >
-                                       Delete Product{hover ? <ArrowForward /> : <ArrowRight />}
+                                        Delete Product{hover ? <ArrowForward /> : <ArrowRight />}
                                     </Button>
-                                </HeroBtnWrapper> */}
+                                </HeroBtnWrapper>
                             </div>
                         </>
                     ))}

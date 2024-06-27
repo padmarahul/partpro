@@ -24,6 +24,7 @@ import OrderTrackingComponent from "./pages/OrderTrackingComponent";
 import ManageFeedbackComponent from "./pages/ManageFeedbackComponent";
 import ManageInventoryLevelsComponent from "./pages/ManageInventoryLevelsComponent";
 import ManageOnlineSalesComponent from "./pages/ManageOnlineSalesComponent";
+import ViewLoyaltyPointsComponent from "./pages/ViewLoyaltyPointsComponent";
 function App() {
   return (
     <>
@@ -47,6 +48,7 @@ function App() {
             <Route path='/manage-inventory/:id' element={< UpdateInventoryComponent/>} exact />
             <Route path='/order-tracking/:id' element={< OrderTrackingComponent/>} exact />
             <Route path='/manage-feedback/:id' element={< ManageFeedbackComponent/>} exact />
+            <Route path='/view-loyaltypoints/:id' element={< ViewLoyaltyPointsComponent/>} exact />
             <Route path='/manage-stockstatus/:id' element={< ManageInventoryLevelsComponent/>} exact />
             <Route path='/manage-onlinesales/:id' element={< ManageOnlineSalesComponent/>} exact />
             <Route path='/payment-success/' element={< OrderDetailsComponent/>} exact />

@@ -31,6 +31,17 @@ public class Customer {
 	@Column(name = "username")
 	public String username;
 	
+	@Column(name = "loyaltyPoints")
+	private int loyaltyPoints;
+	
+	public int getLoyaltyPoints() {
+		return loyaltyPoints;
+	}
+
+	public void setLoyaltyPoints(int loyaltyPoints) {
+		this.loyaltyPoints = loyaltyPoints;
+	}
+
 	public int getCustomerId() {
 		return customerId;
 	}

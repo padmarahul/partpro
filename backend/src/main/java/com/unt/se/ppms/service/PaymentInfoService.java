@@ -34,4 +34,6 @@ public interface PaymentInfoService {
 	public String manageOnlineSales(SalesDTO dto);
 	
 	public List<OnlineSalesDTO>viewOnlineSales();
+	
+	public void addLoyaltyPoints(int customerId, int points);
 }

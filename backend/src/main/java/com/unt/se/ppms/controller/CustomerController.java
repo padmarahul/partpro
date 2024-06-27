@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unt.se.ppms.dto.CustomerDataDTO;
 import com.unt.se.ppms.entities.Cart;
 import com.unt.se.ppms.entities.Customer;
 import com.unt.se.ppms.entities.Feedback;
@@ -101,6 +102,16 @@ public class CustomerController {
 		try {
 			List<Cart> items = customerService.viewOrderedProducts(userId);
 			return new ResponseEntity<>(items, HttpStatus.OK);
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+	
+	@GetMapping("/{userId}/getCustomerDetails")
+	public ResponseEntity<CustomerDataDTO> getCustomerDetails(@PathVariable int userId){
+		try {
+			CustomerDataDTO cus = customerService.getCustomerDetails(userId);
+			return new ResponseEntity<>(cus, HttpStatus.OK);
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Container, Form} from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 import LoginServices from "../../services/LoginServices"
 import { Button } from "../../components/ButtonElement";
 import TM from "../../common/assets/form.svg";
@@ -26,11 +26,11 @@ export default function ForgotPassword({ lightTopLine }) {
     setHover(!hover);
   };
 
-  const handleChangePassword= async (event) => {
+  const handleChangePassword = async (event) => {
     event.preventDefault()
     const response = await LoginServices.changepassword(username, password).then(resp => {
       if (resp.status === 200) {
-       
+
         navigate('/login');
       }
     }).catch(err => {
@@ -38,7 +38,7 @@ export default function ForgotPassword({ lightTopLine }) {
     })
 
   }
- 
+
   return (
     <>
       <FeaturesSec>
@@ -74,10 +74,10 @@ export default function ForgotPassword({ lightTopLine }) {
             </Form>
           </div>
           <FeaturesColumn>
-          <ImgWrapper style={{ position: "absolute" }}>
-            <Img src={TM} alt="car" />
-          </ImgWrapper>
-        </FeaturesColumn>
+            <ImgWrapper style={{ position: "absolute" }}>
+              <Img src={TM} alt="car" />
+            </ImgWrapper>
+          </FeaturesColumn>
         </Container>
       </FeaturesSec>
     </>

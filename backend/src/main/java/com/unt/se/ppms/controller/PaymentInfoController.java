@@ -98,6 +98,9 @@ public class PaymentInfoController {
                 dto.setProductIDString(productIdsString);
                 dto.setTotalAmount(Double.parseDouble(totalAmount));
                 paymentInfoService.manageOnlineSales(dto);
+             // Add loyalty points to the customer
+                int loyaltyPoints = calculateLoyaltyPoints(Double.parseDouble(totalAmount));
+                paymentInfoService.addLoyaltyPoints((int)userId, loyaltyPoints);
                 String redirectUrl = "http://localhost:3000/payment-success?orderId=" + paymentId + "&orderStatus=Pending" + "&productIds=" + productIdsString;
                 return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirectUrl)).build();
             } else {
@@ -108,6 +111,12 @@ public class PaymentInfoController {
             return ResponseEntity.badRequest().body("Error during payment execution: " + e.getMessage());
         }
     }
+	
+	 private int calculateLoyaltyPoints(double amount) {
+	        // Implement your logic to calculate loyalty points based on the amount
+	        // For example, 1 point for every 10 units of currency
+	        return (int) (amount / 5);
+	    }
 
 
     @GetMapping("/{userId}/cancel")

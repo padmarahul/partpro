@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unt.se.ppms.dto.CustomerDataDTO;
 import com.unt.se.ppms.entities.Cart;
 import com.unt.se.ppms.entities.Cart.OrderStatus;
 import com.unt.se.ppms.entities.Customer;
@@ -134,6 +135,22 @@ public class CustomerServiceImpl implements CustomerService {
 			  return null;
 		  }
 		  return feedback;
+	}
+
+	@Override
+	public CustomerDataDTO getCustomerDetails(int userId) {
+		Customer cus=customerRepository.getById(userId);
+		CustomerDataDTO dto= new CustomerDataDTO();
+		if(cus.getCustomerId() == userId)
+		{
+			dto.setCustomerId(cus.getCustomerId());
+			dto.setEmailId(cus.getEmailId());
+			dto.setFullName(cus.getFullName());
+			dto.setLoyaltyPoints(cus.getLoyaltyPoints());
+			dto.setMobileno(cus.getMobileNumber());
+			dto.setZipcode(cus.getZipcode());
+		}
+		return dto;
 	}
 
 
